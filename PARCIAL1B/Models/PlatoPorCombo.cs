@@ -9,7 +9,7 @@ public partial class PlatoPorCombo
 
     public int? EmpresaId { get; set; }
 
-    public string? ComboId { get; set; }
+    public int? ComboId { get; set; }
 
     public int? PlatoId { get; set; }
 
