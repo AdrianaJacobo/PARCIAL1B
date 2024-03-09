@@ -36,7 +36,7 @@ namespace PARCIAL1B.Controllers
         //Filtros
         //Listado filtrado por Nombre del elemento
         [HttpGet]
-        [Route("FindNomAp")]
+        [Route("FindNomElemento")]
         public IActionResult FiltroNombreElemento(string nombreElemento)
         {
             List<Plato> listadoPlatos = (from p in _parcialContexto.Platos
@@ -52,7 +52,6 @@ namespace PARCIAL1B.Controllers
 
             return Ok(listadoPlatos);
         }
-
         [HttpPost]
         [Route("Add")]
 
