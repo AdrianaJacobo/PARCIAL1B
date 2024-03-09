@@ -74,7 +74,31 @@ namespace PARCIAL1B.Controllers
 
         [HttpPut]
         [Route("actualizar/{id}")]
+        public IActionResult ActualizarplatoXcombo(int id, [FromBody] PlatoPorCombo platoXcomboModificar)
+        {
+            //obtencion de registro original
+            PlatoPorCombo? platoXcomboActual = (from e in _parcialContexto.PlatoPorCombos
+                                                  where e.PlatosPorComboId == id
+                                                  select e).FirstOrDefault();
 
+            //verificacion de existencia del registro segun ID
+            if (platoXcomboActual == null)
+            {
+                return NotFound();
+            }
+            //Alteración de los campos
+            platoXcomboActual.EmpresaId = platoXcomboModificar.EmpresaId;
+            platoXcomboActual.ComboId = platoXcomboModificar.ComboId;
+            platoXcomboActual.PlatoId = platoXcomboModificar.PlatoId;
+            platoXcomboActual.Estado = platoXcomboModificar.Estado;
+
+
+            //registro marcado como modificado en el contexto y se envia a la modificacion a la bd
+            _parcialContexto.Entry(platoXcomboActual).State = EntityState.Modified;
+            _parcialContexto.SaveChanges();
+
+            return Ok(platoXcomboModificar);
+        }
 
         [HttpDelete]
         [Route("eliminar/{id}")]
@@ -93,10 +117,10 @@ namespace PARCIAL1B.Controllers
             }
             //Eliminación del registro
             _parcialContexto.PlatoPorCombos.Attach(platoXcombo);
-            _parcialContexto.PlatoPorCombos.Remove();
+            _parcialContexto.PlatoPorCombos.Remove(platoXcombo);
             _parcialContexto.SaveChanges();
 
-            return Ok(equipo);
+            return Ok(platoXcombo);
         }
 
 
@@ -133,6 +157,8 @@ namespace PARCIAL1B.Controllers
 
             return Ok(platosPorCombo);
         }
+
+        
 
     }
 

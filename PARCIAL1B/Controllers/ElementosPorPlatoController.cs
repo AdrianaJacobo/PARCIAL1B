@@ -112,5 +112,33 @@ namespace PARCIAL1B.Controllers
 
             return Ok(elementoP);
         }
+
+
+        //Listado de todos los platos que no tienen elemento asignado
+        [HttpGet]
+        [Route("platos-sin-elemento")]
+        public IActionResult ListarPlatosSinElemento()
+        {
+            var platosSinElemento = (from plato in _parcialContexto.Platos
+                                     join elementoPorPlato in _parcialContexto.ElementosPorPlatos on plato.PlatoId equals elementoPorPlato.PlatoId into platoElementos
+                                     from pe in platoElementos.DefaultIfEmpty()
+                                     where pe == null
+                                     select new
+                                     {
+                                         Plato = plato.NombrePlato,
+                                         Descripcion = plato.DescripcionPlato,
+                                         Precio = plato.Costo
+                                     }).ToList();
+
+            if (platosSinElemento.Count == 0)
+            {
+                return NotFound("No se encontraron platos sin elementos asignados.");
+            }
+
+            return Ok(platosSinElemento);
+        }
+
+
     }
 }
+
