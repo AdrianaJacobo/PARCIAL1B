@@ -33,6 +33,26 @@ namespace PARCIAL1B.Controllers
             return Ok(listadoPlatos);
         }
 
+        //Filtros
+        //Listado filtrado por Nombre del elemento
+        [HttpGet]
+        [Route("FindNomAp")]
+        public IActionResult FiltroNombreElemento(string nombreElemento)
+        {
+            List<Plato> listadoPlatos = (from p in _parcialContexto.Platos
+                                         join ep in _parcialContexto.ElementosPorPlatos on p.PlatoId equals ep.PlatoId
+                                         join e in _parcialContexto.Elementos on ep.ElementoId equals e.ElementoId
+                                         where e.Elemento1 == nombreElemento
+                                         select p).ToList();
+
+            if (listadoPlatos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(listadoPlatos);
+        }
+
         [HttpPost]
         [Route("Add")]
 

@@ -15,6 +15,7 @@ namespace PARCIAL1B.Controllers
         {
             _parcialContexto = parcialContexto;
         }
+        //Get
         [HttpGet]
         [Route("GetAll")]
         public IActionResult Get()
